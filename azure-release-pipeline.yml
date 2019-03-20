@@ -1,0 +1,66 @@
+steps:
+- task: ExtractFiles@1
+  displayName: 'Extract files '
+  inputs:
+    archiveFilePatterns: '**/*.zip'
+    destinationFolder: '$(System.DefaultWorkingDirectory)/build/release/s'
+
+    steps:
+- script: |
+   echo Write your commands here
+   cd D:\a\r1\a\build\release\s
+   dir /s
+   echo Use the environment variables input below to pass secret variables to this script
+  displayName: 'Command Line Script'
+
+  steps:
+- task: NodeTool@0
+  displayName: 'Use Node 8.x'
+  inputs:
+    versionSpec: 8.x
+    checkLatest: true
+
+    variables:
+  username: 'ashish.rastogi18@ashish345.onmicrosoft.com'
+  password: '@badshah88'
+  tenant: 'ashish345'
+  cdnsite: 'sites/intranet'
+  cdnlib: 'cdn'
+
+steps:
+- task: Gulp@0
+  displayName: 'gulp upload-to-sharepoint'
+  inputs:
+    gulpFile: '$(System.DefaultWorkingDirectory)/build/release/s/gulpfile.js'
+    targets: 'upload-to-sharepoint'
+    arguments: ' --ship --username $(username) --password $(password) --tenant $(tenant) --cdnsite $(cdnsite) --cdnlib $(cdnlib)'
+
+    variables:
+  username: 'ashish.rastogi18@ashish345.onmicrosoft.com'
+  password: '@badshah88'
+  tenant: 'ashish345'
+  cdnsite: 'sites/intranet'
+  catalogsite: 'sites/ashishappcatalog'
+
+steps:
+- task: Gulp@0
+  displayName: 'gulp upload-app-pkg'
+  inputs:
+    gulpFile: '$(System.DefaultWorkingDirectory)/build/release/s/gulpfile.js'
+    targets: 'upload-app-pkg'
+    arguments: '--ship --username $(username) --password $(password) --tenant $(tenant) --cdnsite $(cdnsite) --catalogsite $(catalogsite)'
+
+    variables:
+  username: 'ashish.rastogi18@ashish345.onmicrosoft.com'
+  password: '@badshah88'
+  tenant: 'ashish345'
+  cdnsite: 'sites/intranet'
+  catalogsite: 'sites/ashishappcatalog'
+
+steps:
+- task: Gulp@0
+  displayName: 'gulp deploy-sppkg'
+  inputs:
+    gulpFile: '$(System.DefaultWorkingDirectory)/build/release/s/gulpfile.js'
+    targets: 'deploy-sppkg'
+    arguments: '--ship --username $(username) --password $(password) --tenant $(tenant) --cdnsite $(cdnsite) --catalogsite $(catalogsite)'
