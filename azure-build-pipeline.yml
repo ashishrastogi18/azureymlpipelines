@@ -9,10 +9,10 @@ variables:
 
 steps:
 - task: NodeTool@0
-  displayName: 'Use Node 8.x'
+  displayName: 'Use Node 7.x'
   inputs:
-    versionSpec: 8.x
-    checkLatest: true
+    versionSpec: 7.x
+    checkLatest: false
 
 - task: Npm@1
   displayName: 'npm install'
